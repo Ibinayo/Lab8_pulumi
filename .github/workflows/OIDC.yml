@@ -8,7 +8,7 @@ on:
 
 jobs:
   pulumi-up:
-    name: pulumi-up
+    name: oidc-up
     runs-on: ubuntu-latest
     permissions:
       id-token: write  # Required for OIDC
