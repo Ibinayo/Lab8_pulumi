@@ -32,7 +32,7 @@ jobs:
         with:
           role-to-assume: arn:aws:iam::851725449366:role/PulumiOIDCRole  # Replace with your IAM Role ARN
           role-session-name: pulumi-session
-          aws-region: us-east-1  # Set your AWS region
+          aws-region: us-west-2  # Set your AWS region
 
       - name: Deploy Infrastructure with Pulumi
         uses: pulumi/actions@v5
