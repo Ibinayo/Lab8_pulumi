@@ -1,0 +1,34 @@
+name: pulumi-destroy
+
+on:
+  workflow_dispatch:
+
+jobs:
+  pulumi-destroy:
+    name: pulumi-destroy
+    runs-on: ubuntu-latest
+    concurrency:
+      group: pulumi-${{ github.ref }}
+      cancel-in-progress: true
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js 18
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      - name: Install Dependencies
+        working-directory: ./ppinfra
+        run: npm install
+
+      - name: Destroy Pulumi Stack
+        uses: pulumi/actions@v5
+        with:
+          command: destroy
+          stack-name: Ibinayo/mylab8project/dev
+          work-dir: ./ppinfra
+          args: --yes
+        env:
+          PULUMI_ACCESS_TOKEN: ${{ secrets.PULUMI_ACCESS_TOKEN }}
