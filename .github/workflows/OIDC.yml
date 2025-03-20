@@ -1,0 +1,44 @@
+name: main
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  pulumi-up:
+    name: pulumi-up
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write  # Required for OIDC
+      contents: read   # Allows reading repo contents
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js 18
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      - name: Install Dependencies
+        working-directory: ./ppinfra
+        run: npm install
+
+      - name: Configure AWS credentials using OIDC
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::851725449366:role/PulumiOIDCRole  # Replace with your IAM Role ARN
+          role-session-name: pulumi-session
+          aws-region: us-east-1  # Set your AWS region
+
+      - name: Deploy Infrastructure with Pulumi
+        uses: pulumi/actions@v5
+        with:
+          command: up
+          stack-name: Ibinayo/mylab8project/dev
+          work-dir: ./ppinfra
+        env:
+          PULUMI_ACCESS_TOKEN: ${{ secrets.PULUMI_ACCESS_TOKEN }}
