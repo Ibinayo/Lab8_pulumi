@@ -1,0 +1,5 @@
+config:
+  aws:region: us-west-2
+  mylab8project:errorDocument: error.html
+  mylab8project:indexDocument: index.html
+  mylab8project:path: ./www
