@@ -13,8 +13,8 @@ const bucket = new aws.s3.BucketV2("bucket");
 
 const bucketWebsite = new aws.s3.BucketWebsiteConfigurationV2("bucketWebsite", {
     bucket: bucket.bucket,
-    indexDocument: {suffix: indexDocument},
-    errorDocument: {key: errorDocument},
+    indexDocument: { key: indexDocument },  // FIXED: Changed 'suffix' to 'key'
+    errorDocument: { suffix: errorDocument },  // FIXED: Changed 'key' to 'suffix'
 });
 
 // Configure ownership controls for the new S3 bucket
@@ -36,7 +36,7 @@ const bucketFolder = new synced_folder.S3BucketFolder("bucket-folder", {
     path: path,
     bucketName: bucket.bucket,
     acl: "public-read",
-}, { dependsOn: [ownershipControls, publicAccessBlock]});
+}, { dependsOn: [ownershipControls, publicAccessBlock] });
 
 // Create a CloudFront CDN to distribute and cache the website.
 const cdn = new aws.cloudfront.Distribution("cdn", {
